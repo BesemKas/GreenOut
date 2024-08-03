@@ -1,5 +1,7 @@
+using GreenOut.Data;
 using GreenOut.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
 namespace GreenOut.Controllers
@@ -7,15 +9,19 @@ namespace GreenOut.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
+        private readonly GreenOutDbContext _context;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, GreenOutDbContext context)
         {
             _logger = logger;
+            this._context = context;
         }
+  
 
         public IActionResult Index()
         {
-            return View();
+            var categories = _context.Category.ToList();
+            return View(categories);
         }
 
         public IActionResult Privacy()
