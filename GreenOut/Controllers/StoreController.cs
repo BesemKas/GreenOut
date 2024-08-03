@@ -18,5 +18,12 @@ namespace GreenOut.Controllers
             var products = _context.Product.Include(a=>a.Category).ToList();
             return View(products);
         }
+
+        public IActionResult Detail(int id)
+        {
+            Product product = _context.Product.FirstOrDefault(p => p.ProductID ==id);
+
+            return PartialView("Details",product);
+        }
     }
 }
