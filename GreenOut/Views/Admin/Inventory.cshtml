@@ -4,11 +4,32 @@
     ViewData["Title"] = "Inventory";
 }
 
-<h1>Admin Product Management</h1>
+<h1>Inventory</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#CreateNewProduct">
+        Create New
+    </button>
 </p>
+
+<div class="modal fade" id="CreateNewProduct" tabindex="-1" aria-labelledby="AddNewProductDetails" aria-hidden="true">
+    <div class="modal-lg modal-dialog modal-dialog-centered ">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="modalTitle">Add new Product Details</h1>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body d-flex flex-column">
+                @Html.Partial("Create", new GreenOut.Models.Product())
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary">Add</i></button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <table class="table">
     <thead>
         <tr>
@@ -37,7 +58,7 @@
                         @Html.DisplayFor(modelItem => item.Name)
                     </td>
                     <td>
-                        R @Html.DisplayFor(modelItem => item.Price)
+                        @Html.DisplayFor(modelItem => item.Price)
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Description)
@@ -50,10 +71,11 @@
                     </td>
                     <td>
                         <a asp-action="Edit" asp-route-id="@item.ProductID">Edit</a> |
-                        <a asp-action="Details" asp-route-id="@item.ProductID">Details</a> |
                         <a asp-action="Delete" asp-route-id="@item.ProductID">Delete</a>
                     </td>
                 </tr>
         }
     </tbody>
 </table>
+
+

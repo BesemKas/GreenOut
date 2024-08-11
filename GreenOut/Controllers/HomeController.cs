@@ -14,7 +14,7 @@ namespace GreenOut.Controllers
         public HomeController(ILogger<HomeController> logger, GreenOutDbContext context)
         {
             _logger = logger;
-            this._context = context;
+            _context = context;
         }
   
 
@@ -22,6 +22,9 @@ namespace GreenOut.Controllers
         {
             var categories = _context.Category.ToList();
             return View(categories);
+
+
+
         }
 
         public IActionResult Privacy()
