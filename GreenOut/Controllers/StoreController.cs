@@ -1,4 +1,5 @@
 ﻿using GreenOut.Data;
+using GreenOut.Interfaces;
 using GreenOut.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -7,21 +8,22 @@ namespace GreenOut.Controllers
 {
     public class StoreController : Controller
     {
-        private readonly GreenOutDbContext _context;
+        private readonly IProductRepository _productRepository;
 
-        public StoreController(GreenOutDbContext context)
+        public StoreController(IProductRepository productRepository)
         {
-            _context = context;
+            
+            _productRepository = productRepository;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var products = _context.Product.Include(a=>a.Category).ToList();
+            var products = await _productRepository.GetAll();
             return View(products);
         }
 
-        public IActionResult Detail(int id)
+        public async Task<IActionResult> Detail(int id)
         {
-            Product product = _context.Product.FirstOrDefault(p => p.ProductID ==id);
+            Product product = await _productRepository.GetByIDAsync(id);
 
             return PartialView("Details",product);
         }

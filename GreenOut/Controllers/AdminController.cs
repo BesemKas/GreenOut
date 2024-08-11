@@ -1,4 +1,5 @@
 ﻿using GreenOut.Data;
+using GreenOut.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,39 +7,40 @@ namespace GreenOut.Controllers
 {
     public class AdminController : Controller
     {
-        private readonly GreenOutDbContext _context;
+        private readonly IAdminRepository _adminRepository;
 
-        public AdminController(GreenOutDbContext context)
+        public AdminController(IAdminRepository adminRepository)
         {
-            _context = context;
+          _adminRepository = adminRepository;
         }
 
-        public IActionResult Index() ///dashboard
+        public IActionResult Index() ///Admin dashboard
         {
             return View();
         }
 
-        public IActionResult Inventory() ///Inventory management
+        public async Task<IActionResult> Inventory() ///Inventory management
         {
-            var products = _context.Product.Include(a => a.Category).ToList();
+            var products = await _adminRepository.GetAllProducts(); 
             return View(products);
         }
 
-        public IActionResult Customer() ///Customer management
+        public async Task<IActionResult> Customer() ///Customer management
         {
-            var accounts = _context.Account.ToList();
+            var accounts = await _adminRepository.GetAllAccounts();
             return View(accounts);
         }
 
-        public IActionResult Order() ///order management
+        public async Task<IActionResult> Order() ///order management
         {
-            var orders = _context.Order.ToList();
+            var orders = await _adminRepository.GetAllOrders();
             return View(orders);
         }
 
-        public IActionResult Payment() ///payment management
+        public async Task<IActionResult> Payment() ///payment management
         {
-            return View();
+            var payments = await _adminRepository.GetAllPayments();
+            return View(payments);
         }
     }
 }
