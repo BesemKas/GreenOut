@@ -30,12 +30,7 @@ namespace GreenOut.Controllers
         //public Task<IActionResult> Create()
         //{
 
-        //    var product = new Product();
-        //    return PartialView("Create", product);
-        //}
-
-
-        public async Task<IActionResult> Customer() ///Customer management
+        public IActionResult Customer() ///Customer management
         {
             var accounts = await _adminRepository.GetAllAccounts();
             return View(accounts);
