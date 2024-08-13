@@ -32,7 +32,7 @@ namespace GreenOut.Controllers
 
         public IActionResult Customer() ///Customer management
         {
-            var accounts = await _adminRepository.GetAllAccounts();
+            var accounts = _adminRepository.GetAllAccounts();
             return View(accounts);
         }
 
