@@ -1,6 +1,7 @@
 ﻿using GreenOut.Data;
 using GreenOut.Interfaces;
 using GreenOut.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace GreenOut.Repository
@@ -53,6 +54,8 @@ namespace GreenOut.Repository
         {
             return await _context.Category.ToListAsync();
         }
+
+
 
         public async Task<Product> GetProductByIDAsync(int id)
         {

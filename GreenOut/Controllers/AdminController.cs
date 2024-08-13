@@ -27,12 +27,21 @@ namespace GreenOut.Controllers
             var products = await _adminRepository.GetAllProducts(); 
             return View(products);
         }
-        //public Task<IActionResult> Create()
-        //{
+
+        public async Task<IActionResult> Create()
+        {
+            var categories = _adminRepository.GetCategories();
+            ViewBag.Categories = categories;
+            var product = new Product();
+            return PartialView("Create", product);
+        }
+
+
+
 
         public IActionResult Customer() ///Customer management
         {
-            var accounts = await _adminRepository.GetAllAccounts();
+            var accounts = _adminRepository.GetAllAccounts();
             return View(accounts);
         }
 
