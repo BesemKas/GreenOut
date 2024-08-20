@@ -40,15 +40,20 @@ namespace GreenOut.Controllers
             return View();
         }
 
-        public IActionResult Edit()
+        [HttpPost]
+        public async Task<IActionResult> Create(Product product)
         {
-            return View();
+            if (ModelState.IsValid)
+            {
+                _adminRepository.Add(product);
+                return RedirectToAction("Inventory");
+                
+
+            }
+            return View(product);
         }
 
-        public IActionResult Detail()
-        {
-            return View();
-        }
+
 
         public IActionResult Customer() ///Customer management
         {
