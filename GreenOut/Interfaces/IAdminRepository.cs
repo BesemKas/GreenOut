@@ -8,8 +8,11 @@ namespace GreenOut.Interfaces
         Task<Product> GetProductByIDAsync(int id);
 
         Task<IEnumerable<Product>> GetProductsByCategoryID(int categoryID);
-        Task<IEnumerable<Category>> GetCategories();
-        Task UseCategories();
+        IEnumerable<object> GetCategories();
+
+
+
+
         bool Add(Product product);
         bool Update(Product product);
         bool Delete(Product product);

@@ -5,6 +5,7 @@ using GreenOut.Repository;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace GreenOut.Controllers
 {
@@ -28,16 +29,26 @@ namespace GreenOut.Controllers
             return View(products);
         }
 
-        public async Task<IActionResult> Create()
+
+
+        public IActionResult Create()
         {
             var categories = _adminRepository.GetCategories();
-            ViewBag.Categories = categories;
+            ViewBag.Categories = new SelectList(categories, "Value", "Text");
+
             var product = new Product();
-            return PartialView("Create", product);
+            return View();
         }
 
+        public IActionResult Edit()
+        {
+            return View();
+        }
 
-
+        public IActionResult Detail()
+        {
+            return View();
+        }
 
         public IActionResult Customer() ///Customer management
         {

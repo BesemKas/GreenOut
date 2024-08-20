@@ -3,6 +3,7 @@ using GreenOut.Interfaces;
 using GreenOut.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Diagnostics;
 
 namespace GreenOut.Repository
 {
@@ -50,12 +51,11 @@ namespace GreenOut.Repository
             return await _context.Product.Where(c => c.Category.CategoryID.Equals(categoryID)).ToListAsync();
         }
 
-        public async Task<IEnumerable<Category>> GetCategories()
+        public IEnumerable<object> GetCategories()
         {
-            return await _context.Category.ToListAsync();
+            var categories = _context.Category.Select(c => new { Value = c.CategoryID, Text = c.CategoryName }).ToList();
+            return categories;
         }
-
-
 
         public async Task<Product> GetProductByIDAsync(int id)
         {
