@@ -2,6 +2,7 @@
 using GreenOut.Interfaces;
 using GreenOut.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using System.Diagnostics;
 
@@ -50,16 +51,30 @@ namespace GreenOut.Repository
         {
             return await _context.Product.Where(c => c.Category.CategoryID.Equals(categoryID)).ToListAsync();
         }
-
-        public IEnumerable<object> GetCategories()
+        public async Task<bool> CategoryExists(int categoryId)
         {
-            var categories = _context.Category.Select(c => new { Value = c.CategoryID, Text = c.CategoryName }).ToList();
-            return categories;
+            return await _context.Category.AnyAsync(c => c.CategoryID == categoryId);
         }
 
         public async Task<Product> GetProductByIDAsync(int id)
         {
-            return await _context.Product.FirstOrDefaultAsync(i => i.ProductID == id);
+            return await _context.Product.Include(c=>c.Category).FirstOrDefaultAsync(i => i.ProductID == id);
+        }
+        public async Task<Product> GetProductByIDAsyncNoTracking(int id)
+        {
+            return await _context.Product.Include(c => c.Category).AsNoTracking().FirstOrDefaultAsync(i => i.ProductID == id);
+        }
+
+
+        public IEnumerable<SelectListItem> GetAllCategories()
+        {
+            var CategorySelectList = _context.Category.Select(c => new SelectListItem
+            {
+                Text = c.CategoryName,
+                Value = c.CategoryID.ToString()
+            });
+            return CategorySelectList;
+
         }
 
         /// <summary>

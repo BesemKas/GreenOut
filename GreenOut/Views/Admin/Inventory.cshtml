@@ -57,14 +57,36 @@
                 @Html.DisplayFor(modelItem => item.Stock)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryID)
+                @Html.DisplayFor(modelItem => item.Category.CategoryName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ProductID">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.ProductID">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.ProductID">Delete</a>
+                    <a asp-action="Details" asp-route-id="@item.ProductID" data-bs-toggle="modal" data-bs-target="#_@item.ProductID">Preview</a> |
+                    
+                    //broken
+                    <a asp-action="Delete" asp-route-id="@item.ProductID" method="post">Delete</a> 
             </td>
         </tr>
-}
+            <!-- Modal -->
+            <div class="modal fade" id="_@item.ProductID" tabindex="-1" aria-labelledby="productDetails" aria-hidden="true">
+                <div class="modal-lg modal-dialog modal-dialog-centered ">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="modalTitle"> @Html.DisplayFor(modelItem => item.Name)</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body d-flex flex-column">
+                            @Html.Partial("Preview", item)
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary"><i class="bi bi-cart4"></i></button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        } 
+       
     </tbody>
 </table>
+

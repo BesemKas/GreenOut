@@ -1,4 +1,5 @@
 ﻿using GreenOut.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GreenOut.Interfaces
 {
@@ -6,12 +7,13 @@ namespace GreenOut.Interfaces
     {
         Task<IEnumerable<Product>> GetAllProducts();
         Task<Product> GetProductByIDAsync(int id);
+        Task<Product> GetProductByIDAsyncNoTracking(int id);
 
         Task<IEnumerable<Product>> GetProductsByCategoryID(int categoryID);
-        IEnumerable<object> GetCategories();
 
+        public IEnumerable<SelectListItem> GetAllCategories();
 
-
+        public Task<bool> CategoryExists(int categoryId);
 
         bool Add(Product product);
         bool Update(Product product);

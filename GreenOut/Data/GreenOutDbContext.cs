@@ -18,6 +18,7 @@ namespace GreenOut.Data
         public DbSet<Payment> Payment { get; set; }
         public DbSet<OrderItem> OrderItem { get; set; }
         public DbSet<CartItem> CartItem { get; set; }
+        public DbSet<GreenOut.Models.ProductEditViewModel> ProductEditViewModel { get; set; } = default!;
 
 
 

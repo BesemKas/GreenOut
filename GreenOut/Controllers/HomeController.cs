@@ -20,8 +20,8 @@ namespace GreenOut.Controllers
 
         public IActionResult Index()
         {
-            var categories = _context.Category.ToList();
-            return View(categories);
+           
+            return View();
 
 
 

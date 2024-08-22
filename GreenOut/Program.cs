@@ -11,6 +11,12 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IAdminRepository, AdminRepository>();
 builder.Services.AddDbContext<GreenOutDbContext>(options =>
 {
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
+           .EnableSensitiveDataLogging(); // Add this line here
+});
+
+builder.Services.AddDbContext<GreenOutDbContext>(options =>
+{
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 

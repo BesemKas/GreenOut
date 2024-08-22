@@ -1,12 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace GreenOut.Models
 {
-    public class Product
+    public class ProductEditViewModel
     {
-        [Key]
-        public int ProductID { get; set; }
+        public int ID { get; set; }
         public string Name { get; set; }
 
         public decimal Price { get; set; }
@@ -15,10 +15,9 @@ namespace GreenOut.Models
 
         public int Stock { get; set; }
 
-        [ForeignKey(nameof(Category))]
         public int CategoryID { get; set; }
-
         public Category? Category { get; set; }
 
+      
     }
 }

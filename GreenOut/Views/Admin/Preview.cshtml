@@ -1,0 +1,33 @@
+﻿@model GreenOut.Models.Product
+
+<div class="row d-flex d-inline-flex">
+    @* First Column *@
+    <div class="col-md-4">
+        <img src="@Html.DisplayFor(modelItem=>modelItem.ImageURL)" alt="Product Image" class="img-fluid">
+    </div>
+    @* Second Column *@
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-3"><strong>@Html.DisplayNameFor(model => model.Name)</strong></div>
+            <div class="col-9">@Html.DisplayFor(modelItem => modelItem.Name)</div>
+        </div>
+        <div class="row">
+            <div class="col-3"><strong>@Html.DisplayNameFor(model => model.Price)</strong></div>
+            <div class="col-9">R @Html.DisplayFor(modelItem => modelItem.Price)</div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-3"><strong>@Html.DisplayNameFor(model => model.Description)</strong></div>
+            <div class="col-9">@Html.DisplayFor(modelItem => modelItem.Description)</div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-3"><strong>@Html.DisplayNameFor(model => model.Category)</strong></div>
+            <div class="col-9">@Html.DisplayFor(modelItem => modelItem.Category.CategoryName)</div>
+        </div>
+        <div class="row">
+            <div class="col-3"><strong>@Html.DisplayNameFor(model => model.Stock)</strong></div>
+            <div class="col-9">@Html.DisplayFor(modelItem => modelItem.Stock)</div>
+        </div>
+    </div>
+</div>
