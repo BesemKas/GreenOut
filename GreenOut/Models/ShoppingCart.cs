@@ -7,7 +7,7 @@ namespace GreenOut.Models
         [Key]
         public int CartID { get; set; }
 
-        public int AccountID { get; set; }
+        public string AccountID { get; set; }
         public Account Account { get; set; }
     }
 }

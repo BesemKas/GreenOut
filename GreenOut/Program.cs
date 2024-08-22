@@ -1,7 +1,11 @@
 using GreenOut.Data;
 using GreenOut.Interfaces;
+using GreenOut.Models;
 using GreenOut.Repository;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using RunGroopWebApp.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -14,14 +18,21 @@ builder.Services.AddDbContext<GreenOutDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
            .EnableSensitiveDataLogging(); // Add this line here
 });
-
-builder.Services.AddDbContext<GreenOutDbContext>(options =>
-{
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-});
+builder.Services.AddIdentity<Account, IdentityRole>()
+    .AddEntityFrameworkStores<GreenOutDbContext>();
+builder.Services.AddMemoryCache();
+builder.Services.AddSession();
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+       .AddCookie();
 
 
 var app = builder.Build();
+
+if (args.Length == 1 && args[0].ToLower() == "seeddata")
+{
+    await Seed.SeedUsersAndRolesAsync(app);
+    //Seed.SeedData(app);
+}
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -32,7 +32,7 @@ namespace GreenOut.Repository
         /// <returns>An asynchronous task that returns a list of all products.</returns>
         public async Task<IEnumerable<Product>> GetAll()
         {
-            return await _context.Product.Include(a => a.Category).ToListAsync();
+            return await _context.Products.Include(a => a.Category).ToListAsync();
         }
 
         /// <summary>
@@ -42,7 +42,7 @@ namespace GreenOut.Repository
         /// <returns>An asynchronous task that returns a list of products in the specified category.</returns>
         public async Task<IEnumerable<Product>> GetByCategoryID(int categoryID)
         {
-            return await _context.Product.Where(c => c.Category.CategoryID.Equals(categoryID)).ToListAsync();
+            return await _context.Products.Where(c => c.Category.CategoryID.Equals(categoryID)).ToListAsync();
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace GreenOut.Repository
         /// <returns>An asynchronous task that returns the product with the specified ID, or null if not found.</returns>
         public async Task<Product> GetByIDAsync(int id)
         {
-            return await _context.Product.FirstOrDefaultAsync(i => i.ProductID == id);
+            return await _context.Products.FirstOrDefaultAsync(i => i.ProductID == id);
         }
 
 

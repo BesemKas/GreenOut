@@ -44,31 +44,31 @@ namespace GreenOut.Repository
         //products -- start
         public async Task<IEnumerable<Product>> GetAllProducts()
         {
-            return await _context.Product.Include(a => a.Category).ToListAsync();
+            return await _context.Products.Include(a => a.Category).ToListAsync();
         }
 
         public async Task<IEnumerable<Product>> GetProductsByCategoryID(int categoryID)
         {
-            return await _context.Product.Where(c => c.Category.CategoryID.Equals(categoryID)).ToListAsync();
+            return await _context.Products.Where(c => c.Category.CategoryID.Equals(categoryID)).ToListAsync();
         }
         public async Task<bool> CategoryExists(int categoryId)
         {
-            return await _context.Category.AnyAsync(c => c.CategoryID == categoryId);
+            return await _context.Categories.AnyAsync(c => c.CategoryID == categoryId);
         }
 
         public async Task<Product> GetProductByIDAsync(int id)
         {
-            return await _context.Product.Include(c=>c.Category).FirstOrDefaultAsync(i => i.ProductID == id);
+            return await _context.Products.Include(c=>c.Category).FirstOrDefaultAsync(i => i.ProductID == id);
         }
         public async Task<Product> GetProductByIDAsyncNoTracking(int id)
         {
-            return await _context.Product.Include(c => c.Category).AsNoTracking().FirstOrDefaultAsync(i => i.ProductID == id);
+            return await _context.Products.Include(c => c.Category).AsNoTracking().FirstOrDefaultAsync(i => i.ProductID == id);
         }
 
 
         public IEnumerable<SelectListItem> GetAllCategories()
         {
-            var CategorySelectList = _context.Category.Select(c => new SelectListItem
+            var CategorySelectList = _context.Categories.Select(c => new SelectListItem
             {
                 Text = c.CategoryName,
                 Value = c.CategoryID.ToString()
