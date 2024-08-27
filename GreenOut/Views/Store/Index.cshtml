@@ -28,7 +28,7 @@
                                     <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#_@item.ProductID">
                                         Details
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-outline-primary border-2"><i class="bi bi-cart4 fs-5 text-black"></i></button>
+                                    <a type="button" class="btn btn-sm btn-outline-primary border-2" asp-route-id="@item.ProductID" asp-action="AddToCart" asp-controller="Account"><i class="bi bi-cart4 fs-5 text-black"></i></a>
                                 </div>
                                 <strong class="text-muted">R @Html.DisplayFor(modelItem=>item.Price)</strong>
                             </div>

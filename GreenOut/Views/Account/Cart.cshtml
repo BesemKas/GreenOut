@@ -1,0 +1,33 @@
+﻿
+@model GreenOut.Models.CartViewModel
+
+<h2>Your Cart</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Price</th>
+            <th>Total</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.CartItems)
+        {
+            <tr>
+                <td>@item.Product.Name</td>
+                <td>@item.Quantity</td>
+                <td>R @item.Product.Price</td>
+                <td>R @(item.Quantity * item.Product.Price)</td>
+                <td>
+                    <a asp-action="Delete" asp-route-id="#" method="post"><i class=" bi bi-trash"></i></a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+
+

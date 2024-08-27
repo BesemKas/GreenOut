@@ -27,5 +27,7 @@ namespace GreenOut.Controllers
 
             return PartialView("Details",product);
         }
+
+
     }
 }

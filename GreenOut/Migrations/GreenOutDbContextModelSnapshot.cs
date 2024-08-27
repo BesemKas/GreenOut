@@ -116,14 +116,11 @@ namespace GreenOut.Migrations
                     b.Property<int>("Quantity")
                         .HasColumnType("int");
 
-                    b.Property<int>("ShoppingCartCartID")
-                        .HasColumnType("int");
-
                     b.HasKey("CartItemID");
 
-                    b.HasIndex("ProductID");
+                    b.HasIndex("CartID");
 
-                    b.HasIndex("ShoppingCartCartID");
+                    b.HasIndex("ProductID");
 
                     b.ToTable("CartItems");
                 });
@@ -449,15 +446,15 @@ namespace GreenOut.Migrations
 
             modelBuilder.Entity("GreenOut.Models.CartItem", b =>
                 {
-                    b.HasOne("GreenOut.Models.Product", "Product")
+                    b.HasOne("GreenOut.Models.ShoppingCart", "ShoppingCart")
                         .WithMany()
-                        .HasForeignKey("ProductID")
+                        .HasForeignKey("CartID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("GreenOut.Models.ShoppingCart", "ShoppingCart")
+                    b.HasOne("GreenOut.Models.Product", "Product")
                         .WithMany()
-                        .HasForeignKey("ShoppingCartCartID")
+                        .HasForeignKey("ProductID")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

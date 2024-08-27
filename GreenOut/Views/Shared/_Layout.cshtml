@@ -1,4 +1,5 @@
-﻿<!DOCTYPE html>
+﻿@using GreenOut.Data
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -27,9 +28,34 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Store" asp-action="Index">Store</a>
                         </li>
-                        <li class="nav-item float right">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
-                        </li>
+                        @if(User.Identity.IsAuthenticated)
+                        {
+                            @if (User.IsInRole(UserRoles.Admin))
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="Inventory">Inventory Management</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Admin" asp-action="#">Other</a>
+                                </li>
+                            }
+                            <li class="nav-item float right">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Logout">Logout</a>
+                            </li>
+                            <li class="nav-item float right">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="#">My Account</a>
+                            </li>
+                            <li class="nav-item float right">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Cart">My Cart</a>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item float right">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                            </li>
+                        }
+                        
                     </ul>
                 </div>
             </div>

@@ -1,7 +1,9 @@
 ﻿using GreenOut.Data;  // This namespace refers to classes and logic related to data access
+using GreenOut.Interfaces;
 using GreenOut.Models; // This namespace refers to the 'Account' class likely used to represent a user
 using Microsoft.AspNetCore.Identity; // This namespace provides functionality for user identity management
-using Microsoft.AspNetCore.Mvc; // This namespace provides functionality for working with ASP.NET MVC controllers
+using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims; // This namespace provides functionality for working with ASP.NET MVC controllers
 
 namespace GreenOut.Controllers // This namespace groups related controller classes within the GreenOut application
 {
@@ -10,10 +12,12 @@ namespace GreenOut.Controllers // This namespace groups related controller class
         private readonly UserManager<Account> _userManager; // Injected dependency for managing user accounts
         private readonly SignInManager<Account> _signInManager; // Injected dependency for signing users in and out
         private readonly GreenOutDbContext _context; // Injected dependency for interacting with the database context
+        private readonly IAccountRepository _accountRepository;
 
-        public AccountController(UserManager<Account> userManager, SignInManager<Account> signInManager, GreenOutDbContext context) // Constructor for dependency injection
+        public AccountController(UserManager<Account> userManager, SignInManager<Account> signInManager, GreenOutDbContext context, IAccountRepository accountRepository) // Constructor for dependency injection
         {
             _context = context;
+            _accountRepository = accountRepository;
             _userManager = userManager;
             _signInManager = signInManager;
         }
@@ -85,6 +89,11 @@ namespace GreenOut.Controllers // This namespace groups related controller class
                 if (result.Succeeded)
                 {
                     await _userManager.AddToRoleAsync(newAccount, UserRoles.User);
+                    var cart = new ShoppingCart()
+                    {
+                        AccountID = newAccount.Id,
+                    };
+                    _accountRepository.CreateCart(cart);
                 }
                 return RedirectToAction("Index", "Store");
             }
@@ -92,11 +101,45 @@ namespace GreenOut.Controllers // This namespace groups related controller class
             return View(viewModel);
         }
 
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> Logout()
         {
             await _signInManager.SignOutAsync();
-            return RedirectToAction("Index","Home");
+            return RedirectToAction("Index", "Store");
+        }
+
+
+        public  async Task<IActionResult> Cart()
+        {
+            var accountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var cart = await _accountRepository.GetCartByAccountAsyncIdNoTracking(accountId);
+
+            var viewmodel = new CartViewModel
+            {
+                Cart = cart,
+                CartItems = await _accountRepository.GetAllCartItems(cart.CartID)
+            };
+            return View(viewmodel);
+        }
+
+
+        public  async Task<IActionResult> AddToCart(int id)
+        {
+            var accountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var cart = await _accountRepository.GetCartByAccountAsyncIdNoTracking(accountId);
+
+            var item = new CartItem()
+            {
+                CartID = cart.CartID,
+                ProductID = id,
+                Quantity = 1
+            };
+
+            _accountRepository.Add(item);
+
+
+
+            return RedirectToAction("Cart", "Account");
         }
     }
 }
