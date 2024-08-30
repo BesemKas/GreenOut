@@ -28,7 +28,7 @@ namespace GreenOut.Repository
 
         public  IEnumerable<CartItem> GetAllCartItems(int id)
         {
-            return _context.CartItems.Include(p=>p.Product).Where(i => i.CartID.Equals(id));
+            return _context.CartItems.Include(p => p.Product).Where(i => i.CartID.Equals(id));
         }
 
 
@@ -37,7 +37,7 @@ namespace GreenOut.Repository
         {
             return _context.ShoppingCarts.AsNoTracking().FirstOrDefault(s => s.AccountID == id);
         }
-        
+
 
         public Task<Order> GetOrderByIdAsync(int orderID)
         {
@@ -59,6 +59,7 @@ namespace GreenOut.Repository
     
         public bool AddtoCart(CartItem item)
         {
+            
             _context.Add(item);
             return Save();
         }
@@ -67,15 +68,18 @@ namespace GreenOut.Repository
             await _context.AddAsync(item);
             await _context.SaveChangesAsync();
             return true;
+
         }
 
-        public bool Delete(CartItem item)
+        public async Task<bool> Delete(CartItem item)
         {
             _context.Remove(item);
-            return Save();
+            await _context.SaveChangesAsync();
+            return true;
+
         }
 
- 
+
         public bool Save()
         {
             var saved = _context.SaveChanges();

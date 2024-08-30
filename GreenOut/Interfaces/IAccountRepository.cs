@@ -19,7 +19,7 @@ namespace GreenOut.Interfaces
        Task<bool> AddtoOrder(OrderItem item);
 
         bool Update(CartItem item);
-        bool Delete(CartItem item);
+        Task<bool> Delete(CartItem item);
         bool Save();
 
 

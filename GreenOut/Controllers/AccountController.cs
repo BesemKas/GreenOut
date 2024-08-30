@@ -150,9 +150,10 @@ namespace GreenOut.Controllers
         [HttpPost]
         public async Task<IActionResult> Checkout()
         {
+            
             var accountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var cart = _accountRepository.GetCartByAccountIdNoTracking(accountId);
-            var cartItems = _accountRepository.GetAllCartItems(cart.CartID);
+            var cartItems = _accountRepository.GetAllCartItems(cart.CartID).ToList();
 
             var order = new Order()
             {
@@ -172,6 +173,10 @@ namespace GreenOut.Controllers
                     Quantity = item.Quantity,
                 };
                 await _accountRepository.AddtoOrder(orderItem);
+            }
+            foreach (var item in cartItems)
+            {
+                _accountRepository.Delete(item);
             }
 
 
