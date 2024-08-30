@@ -5,7 +5,7 @@ using GreenOut.Repository;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using RunGroopWebApp.Data;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -18,7 +18,7 @@ builder.Services.AddScoped<IAccountRepository, AccountRepository>();
 builder.Services.AddDbContext<GreenOutDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"))
-           .EnableSensitiveDataLogging(); // Add this line here
+           .EnableSensitiveDataLogging();
 });
 builder.Services.AddIdentity<Account, IdentityRole>()
     .AddEntityFrameworkStores<GreenOutDbContext>();

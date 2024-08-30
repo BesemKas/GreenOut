@@ -1,8 +1,10 @@
-﻿using GreenOut.Data;  // This namespace refers to classes and logic related to data access
+﻿using AspNetCore;
+using GreenOut.Data;  // This namespace refers to classes and logic related to data access
 using GreenOut.Interfaces;
 using GreenOut.Models; // This namespace refers to the 'Account' class likely used to represent a user
 using Microsoft.AspNetCore.Identity; // This namespace provides functionality for user identity management
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using System.Security.Claims; // This namespace provides functionality for working with ASP.NET MVC controllers
 
 namespace GreenOut.Controllers // This namespace groups related controller classes within the GreenOut application
@@ -135,11 +137,55 @@ namespace GreenOut.Controllers // This namespace groups related controller class
                 Quantity = 1
             };
 
-            _accountRepository.Add(item);
+            _accountRepository.AddtoCart(item);
 
 
 
             return RedirectToAction("Cart", "Account");
+        }
+        public async Task<IActionResult> Checkout()
+        {
+            var accountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var cart = await _accountRepository.GetCartByAccountAsyncIdNoTracking(accountId);
+           
+            var viewmodel = new CheckoutViewModel
+            {
+                Cart = cart,
+                CartItems = await _accountRepository.GetAllCartItems(cart.CartID)
+            };
+            return View(viewmodel);
+        }
+        public async Task<IActionResult> Pay()
+        {
+            var accountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var cart = await _accountRepository.GetCartByAccountAsyncIdNoTracking(accountId);
+            var viewmodel = new CartViewModel
+            {
+                Cart = cart,
+                CartItems = await _accountRepository.GetAllCartItems(cart.CartID)
+            };
+            var order = new Order()
+            {
+                OrderDate = DateTime.Now,
+                AccountID = accountId
+
+            };
+            _accountRepository.CreateOrder(order);
+
+            foreach (var item in viewmodel.CartItems)
+            {
+                var product = _accountRepository.GetProductByID(item.ProductID);
+                var orderItem = new OrderItem()
+                {
+                    OrderID = order.OrderID,
+                    ProductID = product.ProductID,
+                    Quantity = item.Quantity,
+                };
+
+            }
+
+
+            return View("Index", "Store");
         }
     }
 }

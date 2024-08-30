@@ -4,7 +4,7 @@ using GreenOut.Models;
 using System.Diagnostics;
 using System.Net;
 
-namespace RunGroopWebApp.Data
+namespace GreenOut.Data
 {
     public class Seed
     {

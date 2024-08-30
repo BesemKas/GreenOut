@@ -57,7 +57,12 @@ namespace GreenOut.Repository
         }
 
     
-        public bool Add(CartItem item)
+        public bool AddtoCart(CartItem item)
+        {
+            _context.Add(item);
+            return Save();
+        }
+        public bool AddtoOrder(OrderItem item)
         {
             _context.Add(item);
             return Save();
@@ -86,6 +91,21 @@ namespace GreenOut.Repository
             _context.Update(item);
             return Save();
         }
-        
+
+        public async Task<IEnumerable<CartItem>> Checkout(int id)
+        {
+            return _context.CartItems.Include(p => p.Product).Where(i => i.CartID.Equals(id));
+        }
+
+        public bool CreateOrder(Order order)
+        {
+            _context.Add(order);
+            return Save();
+        }
+
+        public Product GetProductByID(int id)
+        {
+            return  _context.Products.Include(c => c.Category).FirstOrDefault(i => i.ProductID == id);
+        }
     }
 }

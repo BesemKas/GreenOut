@@ -7,11 +7,17 @@ namespace GreenOut.Interfaces
     {
         Task<IEnumerable<CartItem>> GetAllCartItems(int id);
         Task<ShoppingCart> GetCartByAccountAsyncIdNoTracking(string id);
+        Task<IEnumerable<CartItem>> Checkout(int id);
+        Product GetProductByID(int id);
 
         bool CreateCart(ShoppingCart cart);
-        
+        bool CreateOrder(Order order);
 
-        bool Add(CartItem item);
+
+
+        bool AddtoCart(CartItem item);
+        bool AddtoOrder(OrderItem item);
+
         bool Update(CartItem item);
         bool Delete(CartItem item);
         bool Save();
