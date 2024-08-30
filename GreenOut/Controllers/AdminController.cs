@@ -61,7 +61,7 @@ namespace GreenOut.Controllers
                     ModelState.AddModelError("Product.CategoryID", "Invalid CategoryID. Please select a valid category.");
                 }
 
-                // Additional validation checks (optional)
+                
 
                 if (ModelState.IsValid)
                 {

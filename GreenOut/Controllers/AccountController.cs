@@ -1,15 +1,15 @@
 ﻿
-using GreenOut.Data;  // This namespace refers to classes and logic related to data access
+using GreenOut.Data;  
 using GreenOut.Interfaces;
-using GreenOut.Models; // This namespace refers to the 'Account' class likely used to represent a user
-using Microsoft.AspNetCore.Identity; // This namespace provides functionality for user identity management
+using GreenOut.Models; 
+using Microsoft.AspNetCore.Identity; 
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
 using NuGet.Protocol.Plugins;
-using System.Security.Claims; // This namespace provides functionality for working with ASP.NET MVC controllers
+using System.Security.Claims; 
 
-namespace GreenOut.Controllers // This namespace groups related controller classes within the GreenOut application
+namespace GreenOut.Controllers 
 {
     public class AccountController : Controller // Inherits from the base 'Controller' class to handle user interactions
     {
