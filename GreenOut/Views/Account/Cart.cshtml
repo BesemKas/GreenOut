@@ -22,7 +22,8 @@
                         <input type="number" asp-for="@item.Quantity" min="1" />
                     </td>
                     <td>@item.Product.Price.ToString()</td>
-                    <td>@(item.Quantity * item.Product.Price).ToString()</td>
+                    <td>@(item.Quantity * item.Product.Price)</td>
+                    <td><a asp-action="Delete" asp-route-id="@item.CartItemID">Delete</a> </td>
                 </tr>
             }
         </tbody>

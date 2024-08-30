@@ -184,7 +184,17 @@ namespace GreenOut.Controllers
             return RedirectToAction("Index", "Store");
         }
 
+        public IActionResult Delete(int id)
+        {
+            var cartItem = _accountRepository.GetCartItemByIDAsyncNoTracking(id);
 
+            if (cartItem != null)
+            {
+                _accountRepository.Delete(cartItem);
+                return RedirectToAction("Cart", "Account");
+            }
+            return View("Cart", "Account");
+        }
 
 
 

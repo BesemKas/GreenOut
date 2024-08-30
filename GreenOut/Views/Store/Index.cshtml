@@ -48,7 +48,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="button" class="btn btn-primary"><i class="bi bi-cart4"></i></button>
+                                <a type="button" class="btn btn-sm btn-outline-primary border-2" asp-route-id="@item.ProductID" asp-action="AddToCart" asp-controller="Account"><i class="bi bi-cart4 fs-5 text-black"></i></a>
                             </div>
                         </div>
                     </div>

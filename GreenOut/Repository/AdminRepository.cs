@@ -93,10 +93,12 @@ namespace GreenOut.Repository
         /// </summary>
         /// <param name="product">The product to be deleted.</param>
         /// <returns>True if the product is deleted successfully, false otherwise.</returns>
-        public bool Delete(Product product)
+        public async Task<bool> Delete(Product product)
         {
             _context.Remove(product);
-            return Save();
+            await _context.SaveChangesAsync();
+            return true;
+
         }
 
         /// <summary>

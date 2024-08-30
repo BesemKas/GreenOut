@@ -112,5 +112,10 @@ namespace GreenOut.Repository
         {
             return await _context.Products.AsNoTracking().FirstOrDefaultAsync(i => i.ProductID == id);
         }
+
+        public CartItem GetCartItemByIDAsyncNoTracking(int id)
+        {
+            return _context.CartItems.FirstOrDefault(ci => ci.CartItemID == id);
+        }
     }
 }

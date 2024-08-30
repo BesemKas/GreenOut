@@ -61,10 +61,8 @@
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.ProductID">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.ProductID" data-bs-toggle="modal" data-bs-target="#_@item.ProductID">Preview</a> |
-                    
-                    //broken
-                    <a asp-action="Delete" asp-route-id="@item.ProductID" method="post">Delete</a> 
+                <a asp-action="Details" asp-route-id="@item.ProductID" data-bs-toggle="modal" data-bs-target="#_@item.ProductID">Preview</a> |
+                <a asp-action="Delete" asp-route-id="@item.ProductID" >Delete</a> 
             </td>
         </tr>
             <!-- Modal -->

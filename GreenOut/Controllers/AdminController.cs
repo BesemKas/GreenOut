@@ -124,8 +124,7 @@ namespace GreenOut.Controllers
             return RedirectToAction("Inventory");
 
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Delete(int id)
         {
             var product = await _adminRepository.GetProductByIDAsyncNoTracking(id);

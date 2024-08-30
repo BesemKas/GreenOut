@@ -17,7 +17,7 @@ namespace GreenOut.Interfaces
 
         bool Add(Product product);
         bool Update(Product product);
-        bool Delete(Product product);
+        Task<bool> Delete(Product product);
         bool Save();
 
         Task<IEnumerable<Account>> GetAllAccounts();
