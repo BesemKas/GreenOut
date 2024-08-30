@@ -1,10 +1,12 @@
-﻿using AspNetCore;
+﻿
 using GreenOut.Data;  // This namespace refers to classes and logic related to data access
 using GreenOut.Interfaces;
 using GreenOut.Models; // This namespace refers to the 'Account' class likely used to represent a user
 using Microsoft.AspNetCore.Identity; // This namespace provides functionality for user identity management
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Client;
+using NuGet.Protocol.Plugins;
 using System.Security.Claims; // This namespace provides functionality for working with ASP.NET MVC controllers
 
 namespace GreenOut.Controllers // This namespace groups related controller classes within the GreenOut application
@@ -13,16 +15,17 @@ namespace GreenOut.Controllers // This namespace groups related controller class
     {
         private readonly UserManager<Account> _userManager; // Injected dependency for managing user accounts
         private readonly SignInManager<Account> _signInManager; // Injected dependency for signing users in and out
-        private readonly GreenOutDbContext _context; // Injected dependency for interacting with the database context
+
         private readonly IAccountRepository _accountRepository;
 
-        public AccountController(UserManager<Account> userManager, SignInManager<Account> signInManager, GreenOutDbContext context, IAccountRepository accountRepository) // Constructor for dependency injection
+        public AccountController(UserManager<Account> userManager, SignInManager<Account> signInManager, IAccountRepository accountRepository) // Constructor for dependency injection
         {
-            _context = context;
+
             _accountRepository = accountRepository;
             _userManager = userManager;
             _signInManager = signInManager;
         }
+
 
         public IActionResult Login() // GET request handler for the login view
         {
@@ -114,12 +117,12 @@ namespace GreenOut.Controllers // This namespace groups related controller class
         public  async Task<IActionResult> Cart()
         {
             var accountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var cart = await _accountRepository.GetCartByAccountAsyncIdNoTracking(accountId);
+            var cart =  _accountRepository.GetCartByAccountIdNoTracking(accountId);
 
             var viewmodel = new CartViewModel
             {
                 Cart = cart,
-                CartItems = await _accountRepository.GetAllCartItems(cart.CartID)
+                CartItems =  _accountRepository.GetAllCartItems(cart.CartID)
             };
             return View(viewmodel);
         }
@@ -128,7 +131,7 @@ namespace GreenOut.Controllers // This namespace groups related controller class
         public  async Task<IActionResult> AddToCart(int id)
         {
             var accountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var cart = await _accountRepository.GetCartByAccountAsyncIdNoTracking(accountId);
+            var cart =  _accountRepository.GetCartByAccountIdNoTracking(accountId);
 
             var item = new CartItem()
             {
@@ -143,49 +146,42 @@ namespace GreenOut.Controllers // This namespace groups related controller class
 
             return RedirectToAction("Cart", "Account");
         }
+
+        [HttpPost]
         public async Task<IActionResult> Checkout()
         {
             var accountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var cart = await _accountRepository.GetCartByAccountAsyncIdNoTracking(accountId);
-           
-            var viewmodel = new CheckoutViewModel
-            {
-                Cart = cart,
-                CartItems = await _accountRepository.GetAllCartItems(cart.CartID)
-            };
-            return View(viewmodel);
-        }
-        public async Task<IActionResult> Pay()
-        {
-            var accountId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-            var cart = await _accountRepository.GetCartByAccountAsyncIdNoTracking(accountId);
-            var viewmodel = new CartViewModel
-            {
-                Cart = cart,
-                CartItems = await _accountRepository.GetAllCartItems(cart.CartID)
-            };
+            var cart = _accountRepository.GetCartByAccountIdNoTracking(accountId);
+            var cartItems = _accountRepository.GetAllCartItems(cart.CartID);
+
             var order = new Order()
             {
                 OrderDate = DateTime.Now,
                 AccountID = accountId
-
             };
+
             _accountRepository.CreateOrder(order);
 
-            foreach (var item in viewmodel.CartItems)
+            foreach (var item in cartItems)
             {
-                var product = _accountRepository.GetProductByID(item.ProductID);
+                var product = item.Product;
                 var orderItem = new OrderItem()
                 {
                     OrderID = order.OrderID,
                     ProductID = product.ProductID,
                     Quantity = item.Quantity,
                 };
-
+                await _accountRepository.AddtoOrder(orderItem);
             }
 
 
-            return View("Index", "Store");
+
+            return RedirectToAction("Index", "Store");
         }
+
+
+
+
+
     }
 }

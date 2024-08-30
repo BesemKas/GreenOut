@@ -5,10 +5,10 @@ namespace GreenOut.Interfaces
 {
     public interface IAccountRepository
     {
-        Task<IEnumerable<CartItem>> GetAllCartItems(int id);
-        Task<ShoppingCart> GetCartByAccountAsyncIdNoTracking(string id);
+        IEnumerable<CartItem> GetAllCartItems(int id);
+        ShoppingCart GetCartByAccountIdNoTracking(string id);
         Task<IEnumerable<CartItem>> Checkout(int id);
-        Product GetProductByID(int id);
+        Task<Product> GetProductByIDAsyncNoTracking(int id);
 
         bool CreateCart(ShoppingCart cart);
         bool CreateOrder(Order order);
@@ -16,7 +16,7 @@ namespace GreenOut.Interfaces
 
 
         bool AddtoCart(CartItem item);
-        bool AddtoOrder(OrderItem item);
+       Task<bool> AddtoOrder(OrderItem item);
 
         bool Update(CartItem item);
         bool Delete(CartItem item);

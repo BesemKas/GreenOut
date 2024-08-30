@@ -132,9 +132,9 @@ namespace GreenOut.Controllers
             if (product != null)
             {
                 _adminRepository.Delete(product);
-                return RedirectToAction("Inventory");
+                return RedirectToAction("Inventory","Admin");
             }
-            return View("Inventory");
+            return View("Inventory","Admin");
         }
 
         public async Task<IActionResult> Preview(int id)

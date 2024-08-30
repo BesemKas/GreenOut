@@ -26,16 +26,16 @@ namespace GreenOut.Repository
 
 
 
-        public async Task<IEnumerable<CartItem>> GetAllCartItems(int id)
+        public  IEnumerable<CartItem> GetAllCartItems(int id)
         {
             return _context.CartItems.Include(p=>p.Product).Where(i => i.CartID.Equals(id));
         }
 
 
 
-        public async Task<ShoppingCart> GetCartByAccountAsyncIdNoTracking(string id)
+        public ShoppingCart GetCartByAccountIdNoTracking(string id)
         {
-            return await _context.ShoppingCarts.AsNoTracking().FirstOrDefaultAsync(s => s.AccountID == id);
+            return _context.ShoppingCarts.AsNoTracking().FirstOrDefault(s => s.AccountID == id);
         }
         
 
@@ -62,10 +62,11 @@ namespace GreenOut.Repository
             _context.Add(item);
             return Save();
         }
-        public bool AddtoOrder(OrderItem item)
+        public async Task<bool> AddtoOrder(OrderItem item)
         {
-            _context.Add(item);
-            return Save();
+            await _context.AddAsync(item);
+            await _context.SaveChangesAsync();
+            return true;
         }
 
         public bool Delete(CartItem item)
@@ -103,9 +104,9 @@ namespace GreenOut.Repository
             return Save();
         }
 
-        public Product GetProductByID(int id)
+        public async Task<Product> GetProductByIDAsyncNoTracking(int id)
         {
-            return  _context.Products.Include(c => c.Category).FirstOrDefault(i => i.ProductID == id);
+            return await _context.Products.AsNoTracking().FirstOrDefaultAsync(i => i.ProductID == id);
         }
     }
 }
